@@ -24739,6 +24739,7 @@ const fs = __importStar(__nccwpck_require__(7147));
 function ParseChangelog(filename, tag) {
     let result = '';
     const words = fs.readFileSync(filename, 'utf-8');
+    tag = tag.replace('v', '');
     let LastFoundTag = '';
     const arr = words.split(/\r?\n/);
     // Read file line by line

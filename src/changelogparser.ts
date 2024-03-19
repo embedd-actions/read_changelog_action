@@ -4,6 +4,8 @@ export function ParseChangelog(filename: string, tag: string): string {
   let result = ''
   const words = fs.readFileSync(filename, 'utf-8')
 
+  tag = tag.replace('v', '')
+
   let LastFoundTag = ''
 
   const arr = words.split(/\r?\n/)
