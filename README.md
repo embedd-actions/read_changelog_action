@@ -72,9 +72,9 @@ changelog_examples/changelog.md
 ```
 - name: test changelog reading
   id: changelog_action
-  uses: embedd-actions/read_changelog_action@v1
+  uses: embedd-actions/read_changelog_action@v2
   with:
-    filename: 'changelog_examples/changelog.md'
+    changelogfile: 'changelog_examples/changelog.md'
     tag: '0.0.1'
 ```
 

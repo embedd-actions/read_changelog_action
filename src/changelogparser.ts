@@ -13,21 +13,15 @@ export function ParseChangelog(filename: string, tag: string): string {
   // Read file line by line
   for (let line of arr) {
     let regex = /[0-9]+.[0-9]+.[0-9]+[-]?[bB]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?/g
+    let regex_tag_header = /[A-Za-zА-Яа-я]{2}/g
     let probe = regex.exec(line)
+    let is_not_header = regex_tag_header.exec(line)
 
-    if (probe) {
+    if (probe && !is_not_header) {
       LastFoundTag = probe[0]
     } else {
-      regex = /[*-/#][\s]?[\w\s]+[;.]?/g
-      probe = regex.exec(line)
-
-      if (probe) {
-        line = line.replace('\n', '')
-        line = line.replace('\r', '')
-
-        if (LastFoundTag.search(tag) !== -1) {
-          result += `${line}\r\n`
-        }
+      if (LastFoundTag.search(tag) !== -1) {
+        result += `${line}\r\n`
       }
     }
   }

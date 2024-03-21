@@ -24745,19 +24745,15 @@ function ParseChangelog(filename, tag) {
     // Read file line by line
     for (let line of arr) {
         let regex = /[0-9]+.[0-9]+.[0-9]+[-]?[bB]?[0-9]?[0-9]?[0-9]?[0-9]?[0-9]?/g;
+        let regex_tag_header = /[A-Za-zА-Яа-я]{2}/g;
         let probe = regex.exec(line);
-        if (probe) {
+        let is_not_header = regex_tag_header.exec(line);
+        if (probe && !is_not_header) {
             LastFoundTag = probe[0];
         }
         else {
-            regex = /[*-/#][\s]?[\w\s]+[;.]?/g;
-            probe = regex.exec(line);
-            if (probe) {
-                line = line.replace('\n', '');
-                line = line.replace('\r', '');
-                if (LastFoundTag.search(tag) !== -1) {
-                    result += `${line}\r\n`;
-                }
+            if (LastFoundTag.search(tag) !== -1) {
+                result += `${line}\r\n`;
             }
         }
     }
@@ -24806,11 +24802,12 @@ const changelogparser_1 = __nccwpck_require__(6931);
  */
 async function run() {
     try {
-        const filename = core.getInput('filename');
+        const changelogfile = core.getInput('changelogfile');
         const tag = core.getInput('tag');
+        console.log(`Input filename: ${changelogfile} Tag: ${tag}`);
         // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-        core.debug(`Input filename: ${filename} Tag: ${tag}`);
-        const result = (0, changelogparser_1.ParseChangelog)(filename, tag);
+        core.debug(`Input filename: ${changelogfile} Tag: ${tag}`);
+        const result = (0, changelogparser_1.ParseChangelog)(changelogfile, tag);
         // Set outputs for other workflow steps to use
         core.setOutput('content', result);
     }
